@@ -2,12 +2,12 @@
 
 int test_world::onCreate(redhand::event<redhand::engine>){
     //Add textures to world
-    auto tex0 = std::unique_ptr<redhand::texture2D>(new redhand::texture2D("textures/open/crate.png","house"));
+    auto tex0 = std::unique_ptr<redhand::texture2D>(new redhand::texture2D("testgame/textures/open/crate.png","house"));
     if(this->addTexture(std::move(tex0)) < 0){
         return -20;
     }
 
-    auto tex1 = std::unique_ptr<redhand::texture2D>(new redhand::texture2D("textures/open/house.png","bg"));
+    auto tex1 = std::unique_ptr<redhand::texture2D>(new redhand::texture2D("testgame/textures/open/house.png","bg"));
     if(this->addTexture(std::move(tex1)) < 0){
         return -21;
     }
