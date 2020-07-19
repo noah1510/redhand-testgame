@@ -2,21 +2,11 @@
 
 int test_world::onCreate(redhand::event<redhand::engine>){
     //Add textures to world
-    auto tex0 = std::unique_ptr<redhand::texture2D>(new redhand::texture2D("testgame/textures/open/crate.png","house"));
-    if(this->addTexture(std::move(tex0)) < 0){
-        return -20;
-    }
-
-    auto tex1 = std::unique_ptr<redhand::texture2D>(new redhand::texture2D("testgame/textures/open/house.png","bg"));
+    auto tex1 = std::make_unique<redhand::texture2D>("testgame/textures/open/house.png","bg");
     if(this->addTexture(std::move(tex1)) < 0){
         return -21;
     }
 
-    auto tex2 = std::unique_ptr<redhand::texture2D>(new redhand::texture2D("logo/redhand.svg.png","hand"));
-    if(this->addTexture(std::move(tex2)) < 0){
-        return -22;
-    }
-    
     //creating the objects and add them to the world
     int edges = 240;
 
@@ -66,25 +56,20 @@ int test_world::onCreate(redhand::event<redhand::engine>){
     trig_properties.texture_coordinates = {{0.0f,0.0f}, {1.0f*10.0f,0.0f}, {0.5f*10.0f,1.0f*10.0f}};
     trig_properties.postition = {-0.4f,-0.4f};
     trig_properties.name = "trig";
-    nullptr;
     trig_properties.scale = {0.5f,0.5f};
     trig_properties.rotation_point = {0.0f,0.0f};
     
-    if( this->addObject(std::unique_ptr<redhand::game_object>(new redhand::game_object(trig_properties)) ) < 0){
+    if( this->addObject(std::make_unique<redhand::game_object>(trig_properties) ) < 0){
         return -3;
     }    
 
     //house
-    if( this->addObject(
-        std::move( std::unique_ptr<redhand::game_object>( new house( this->getTextureByName("house"))))
-    ) < 0){
+    if( this->add(new house()) < 0){
         return -3;
     }
 
     //hand
-    if( this->addObject(
-        std::move( std::unique_ptr<redhand::game_object>( new hand( this->getTextureByName("hand"))))
-    ) < 0){
+    if( this->add(new hand()) < 0){
         return -3;
     }
     

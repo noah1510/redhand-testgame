@@ -2,23 +2,17 @@
 
 #include "redhand/all.hpp"
 
-class house : public redhand::game_object{
+class house : public redhand::Actor{
     public:
-        house(
-            std::shared_ptr<redhand::texture2D> texture
-        );
+        house();
 
-        void onLoop(redhand::game_loop_event evt);
+        void act(redhand::game_loop_event evt);
 };
 
-class hand : public redhand::game_object{
+class hand : public redhand::Actor{
     public:
-        hand(
-            std::shared_ptr<redhand::texture2D> texture
-        );
+        hand();
 
-        void onLoop(redhand::game_loop_event evt);
+        void act(redhand::game_loop_event evt);
 
-    protected:
-        void updateWorldTransformation();
 };
