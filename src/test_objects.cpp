@@ -61,10 +61,10 @@ void house::act(redhand::game_loop_event){
 
 hand::hand(){
 
-    setImage("logo/redhand.svg.png");
-    setPosition( {-0.5f, +0.5f});
+    //setImage("logo/redhand.svg.png");
+    setImage("testgame/textures/open/house.png");
     scaleActor(0.5f);
-    setColorAlpha(1.0f);
+    setPosition( {-0.5f, +0.5f});
     setRotaionAxis({0.0f, 1.0f, 0.0f});
 
 }

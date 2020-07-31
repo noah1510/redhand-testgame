@@ -3,6 +3,7 @@
 //#include <chrono>
 //#include <thread>
 #include <cmath>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -18,11 +19,14 @@
 #include "game.hpp"
 
 
-int main(){
+int main( int argc, char **argv){
     int exitCode = 0;
+    if (argc == 0){
+        return 100;
+    }
 
     //create the engine object
-    std::shared_ptr<redhand::engine> gameEngine(new redhand::engine());
+    auto gameEngine = std::make_shared<redhand::engine>(argv[0]);
 
     //get the current config of the engine
     redhand::engine_config conf = gameEngine->getConfig();
