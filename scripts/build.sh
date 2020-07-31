@@ -1,8 +1,34 @@
 #!/bin/bash
 
+find_compiler(){
+    # get cross-distro version of POSIX command
+    COMMAND=""
+    if command -v command 2>/dev/null; then
+        COMMAND="command -v"
+    elif type type 2>/dev/null; then
+        COMMAND="type"
+    fi
+
+    for comp in clang-12 clang-11 clang-10 clang-9 gcc-10 gcc-9 C:/Program Files/LLVM/bin/clang.exe; do
+        if $COMMAND "$comp" 2>/dev/null; then
+            export CC="$comp"
+            break;
+        fi
+    done
+
+    for comp in clang++-12 clang++-11 clang++-10 clang++-9 g++-10 g++-9 C:/Program Files/LLVM/bin/clang++.exe; do
+        if $COMMAND "$comp" 2>/dev/null; then
+            export CXX="$comp"
+            break;
+        fi
+    done
+}
+
 THREADS="3"
 BUILDNAME="testgame"
 BUILDLIB="0"
+SETUP="0"
+CLEAN="0"
 #parse parameter
 pars=$#
 for ((i=1;i<=pars;i+=1))
@@ -32,6 +58,15 @@ do
       BUILDLIB="1"
       shift
       ;;
+    "--setup")
+      SETUP="1"
+      shift
+      ;;
+    "--clean")
+      CLEAN="1"
+      SETUP="1"
+      shift
+      ;;
     "--help")
       echo "This script is used to build the testgame and copy it in the deploy folder."
       echo "Usage: scripts/build.sh [options]"
@@ -40,6 +75,8 @@ do
       echo "    -j [threadnumber]   Build the project with the specified number of threads."
       echo "    -o [buildname]      Build the project with the specified buildname defaults to main"
       echo "    --lib               Also build the library"
+      echo "    --setup             Also setup the environment"
+      echo "    --clean             Also clean the environment before compiling"
       echo ""
       echo "view the source on https://github.com/noah1510/redhand"
       exit 1
@@ -57,12 +94,28 @@ then
   THREADS="$(($THREADS+1))"
 fi
 
+if [ "$CLEAN" == "1" ]
+then
+  bash scripts/clean.sh
+fi
+
+if [ "$SETUP" == "1" ]
+then
+  bash scripts/setup.sh
+fi
+
 if [ "$BUILDLIB" == "1" ]
 then
   echo "building library"
   bash scripts/build.sh -j "$THREADS"
-  echo "finished build of lib"
-  echo ""
+  if [ $? -eq 0 ]
+  then
+    echo "Successfully compiled redhand"
+  else
+    echo "Could not compile redhand" >&2
+    cd "../.."
+    exit 4
+  fi
 fi
 
 REPOROOT="$(pwd)"
@@ -75,9 +128,6 @@ then
 
     EXECUTABLE="$PROJECTNAME-$BUILDNAME"
     REDHAND_LOCATION="deploy/libredhand.so"
-
-    export CC="clang-10"
-    export CXX="clang++-10"
 
 elif [ "$OSTYPE" == "darwin"* ]
 then
@@ -94,8 +144,6 @@ then
     echo "script running on windows"
 
     EXECUTABLE="$PROJECTNAME-$BUILDNAME.exe"
-    
-    #alias make='mingw32-make'
 
 else
     # Unknown os
@@ -103,6 +151,8 @@ else
     echo "Not a supported OS: $OSTYPE" >&2
     exit 1
 fi
+
+find_compiler
 
 echo "number of THREADS:$THREADS"
 echo "buildname:$BUILDNAME"
