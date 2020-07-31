@@ -1,4 +1,5 @@
 #include "test_world.hpp"
+#include <memory>
 
 int test_world::onCreate(redhand::event<redhand::engine>){
     //Add textures to world
@@ -64,12 +65,12 @@ int test_world::onCreate(redhand::event<redhand::engine>){
     }    
 
     //house
-    if( this->add(new house()) < 0){
+    if( this->add(std::make_shared<house>()) < 0){
         return -3;
     }
 
     //hand
-    if( this->add(new hand()) < 0){
+    if( this->add(std::make_shared<hand>()) < 0){
         return -3;
     }
     
