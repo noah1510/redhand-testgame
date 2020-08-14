@@ -30,6 +30,9 @@ set(CMAKE_REQUIRED_FLAGS "-std=c++17")
 include_directories(${CMAKE_PREFIX_PATH}/include/)
 link_directories(${CMAKE_PREFIX_PATH}/lib/)
 
+#search for openal
+find_package(OpenAL REQUIRED)
+
 #search for opengl
 find_package(OpenGL REQUIRED)
 
@@ -97,6 +100,10 @@ target_link_libraries(${OUTPUT} OpenGL::GL)
 target_link_libraries(${OUTPUT} glfw)
 target_include_directories(${OUTPUT} PRIVATE ${VIPS_INCLUDE_DIRS})
 target_link_libraries(${OUTPUT} ${VIPS_LDFLAGS})
+
+target_include_directories(${OUTPUT} PRIVATE ${OPENAL_INCLUDE_DIR})
+target_link_libraries(${OUTPUT} ${OPENAL_LIBRARY})
+
 
 
 if (UNIX)
