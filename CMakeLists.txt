@@ -122,5 +122,5 @@ if (UNIX)
 endif (UNIX)
 
 if (WIN32)
-    target_link_libraries(${OUTPUT} "${CMAKE_PREFIX_PATH}/lib/libredhand.dll")
+    target_link_libraries(${OUTPUT} "${CMAKE_PREFIX_PATH}/lib/libredhand-0.dll")
 endif (WIN32)
