@@ -16,7 +16,7 @@ then
     # Linux
     echo "script running on linux"
 
-    export LD_LIBRARY_PATH="$(pwd)/deploy:$LD_LIBRARY_PATH"
+    export LD_LIBRARY_PATH="$(pwd)/deploy:$(pwd)/build:$LD_LIBRARY_PATH"
     EXECUTABLE="$PROJECTNAME-$BUILDNAME"
 
 elif [ "$OSTYPE" == "darwin"* ]
