@@ -144,7 +144,7 @@ then
     echo "script running on windows"
 
     EXECUTABLE="$PROJECTNAME-$BUILDNAME.exe"
-
+    REDHAND_LOCATION="build/libredhand-0.dll"
 else
     # Unknown os
     echo "running on something else."
