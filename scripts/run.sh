@@ -3,28 +3,22 @@ set -x
 
 if [ $1 ]
 then
-    BUILDNAME="$1"
+    EXECUTABLE="$1"
 else 
-    BUILDNAME="testgame"
+    EXECUTABLE="redhand-testgame"
 fi
 
 REPOROOT="$(pwd)"
-PROJECTNAME="redhand"
 
 if [ "$OSTYPE" == "linux-gnu" ]
 then
     # Linux
     echo "script running on linux"
 
-    export LD_LIBRARY_PATH="$(pwd)/deploy:$(pwd)/build:$LD_LIBRARY_PATH"
-    EXECUTABLE="$PROJECTNAME-$BUILDNAME"
-
 elif [ "$OSTYPE" == "darwin"* ]
 then
     # Mac OSX
     echo "script running on mac osx"
-
-    EXECUTABLE="$PROJECTNAME-$BUILDNAME"
         
 elif [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" || "$OSTYPE" == "win32" ]]
 then
@@ -33,7 +27,7 @@ then
     # POSIX compatibility layer and Linux environment emulation for Windows
     echo "script running on windows"
 
-    EXECUTABLE="$PROJECTNAME-$BUILDNAME.exe"
+    EXECUTABLE="$EXECUTABLE.exe"
 
     #alias make='mingw32-make'
 
@@ -46,7 +40,7 @@ else
 fi
 
 #run the executable
-./deploy/$EXECUTABLE | tail -l
+./build/$EXECUTABLE | tail -l
 
 if [ $? -eq ${PIPESTATUS[0]} ]
 then

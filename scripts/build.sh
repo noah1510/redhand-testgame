@@ -25,26 +25,12 @@ find_compiler(){
 }
 
 THREADS="3"
-BUILDNAME="testgame"
-BUILDLIB="0"
-SETUP="0"
 CLEAN="0"
 #parse parameter
 pars=$#
 for ((i=1;i<=pars;i+=1))
 do
   case "$1" in
-    "-o")
-      shift
-      if [ $1 ]
-      then
-        BUILDNAME="$1"
-      else
-        BUILDNAME="lib"
-      fi
-      i+=1
-      shift
-      ;;
     "-j")
       shift
       if [ $1 ]
@@ -53,14 +39,6 @@ do
       fi
       shift
       i+=1
-      ;;
-    "--lib")
-      BUILDLIB="1"
-      shift
-      ;;
-    "--setup")
-      SETUP="1"
-      shift
       ;;
     "--clean")
       CLEAN="1"
@@ -96,26 +74,7 @@ fi
 
 if [ "$CLEAN" == "1" ]
 then
-  bash scripts/clean.sh
-fi
-
-if [ "$SETUP" == "1" ]
-then
-  bash scripts/setup.sh
-fi
-
-if [ "$BUILDLIB" == "1" ]
-then
-  echo "building library"
-  bash scripts/build.sh -j "$THREADS"
-  if [ $? -eq 0 ]
-  then
-    echo "Successfully compiled redhand"
-  else
-    echo "Could not compile redhand" >&2
-    cd "../.."
-    exit 4
-  fi
+  rm -rf "build"
 fi
 
 REPOROOT="$(pwd)"
@@ -127,7 +86,6 @@ then
     echo "script running on linux"
 
     EXECUTABLE="$PROJECTNAME-$BUILDNAME"
-    REDHAND_LOCATION="deploy/libredhand.so"
 
 elif [ "$OSTYPE" == "darwin"* ]
 then
@@ -144,7 +102,6 @@ then
     echo "script running on windows"
 
     EXECUTABLE="$PROJECTNAME-$BUILDNAME.exe"
-    REDHAND_LOCATION="build/libredhand-0.dll"
 else
     # Unknown os
     echo "running on something else."
@@ -154,23 +111,18 @@ fi
 
 find_compiler
 
-echo "number of THREADS:$THREADS"
-echo "buildname:$BUILDNAME"
-
-mkdir -p "build"
-
 #build actual project
-mkdir -p "build/$BUILDNAME"
-cd "build/$BUILDNAME"
-cmake -G "Ninja" -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DOUTPUTFILE="$PROJECTNAME-$BUILDNAME" -DREPOROOT=$REPOROOT -DREDHAND_LOCATION="$REDHAND_LOCATION" "../../testgame"
+mkdir "build"
+cd "build"
+
+meson setup ".."
 ninja -j"$THREADS"
 if [ $? -eq 0 ]
 then
   echo "Successfully compiled $PROJECTNAME"
 else
   echo "Could not compile $PROJECTNAME" >&2
-  cd "../.."
+  cd ".."
   exit 4
 fi
-cd "../.."
-cp -r "build/$BUILDNAME/$EXECUTABLE" "deploy"
+cd ".."
