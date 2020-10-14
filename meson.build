@@ -8,7 +8,11 @@ project(
     version: '0.1.2'
 )
 
-dep = [dependency('redhand', required : true, fallback : ['redhand', 'redhand_dep'])]
+if not meson.is_subproject()
+    dep = [dependency('redhand', required : true, fallback : ['redhand', 'redhand_dep'])]
+else
+    dep = redhand_dep
+endif
 
 incdir = include_directories('src')
 
