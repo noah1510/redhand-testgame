@@ -11,10 +11,10 @@ project(
 testgame_incdir = include_directories('src')
 
 testgame_sources = [ 
-    'src/game.cpp', 
-    'src/test_objects.cpp', 
-    'src/test_world.cpp', 
-    'src/main.cpp'
+    files('src/game.cpp'), 
+    files('src/test_objects.cpp'), 
+    files('src/test_world.cpp'), 
+    files('src/main.cpp')
 ]
 
 if not meson.is_subproject()
@@ -25,7 +25,7 @@ if not meson.is_subproject()
         testgame_sources,
         include_directories : testgame_incdir,
         dependencies: dep
-    )
+    )    
 endif
 
 
