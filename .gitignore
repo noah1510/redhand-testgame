@@ -12,3 +12,8 @@ _deps
 subprojects/redhand/
 build/
 .cache
+subprojects/glfw3/
+
+subprojects/glib/
+
+subprojects/libffi/
