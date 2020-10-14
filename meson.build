@@ -8,25 +8,26 @@ project(
     version: '0.1.2'
 )
 
-if not meson.is_subproject()
-    dep = [dependency('redhand', required : true, fallback : ['redhand', 'redhand_dep'])]
-else
-    dep = redhand_dep
-endif
+testgame_incdir = include_directories('src')
 
-incdir = include_directories('src')
-
-sources = [ 
+testgame_sources = [ 
     'src/game.cpp', 
     'src/test_objects.cpp', 
     'src/test_world.cpp', 
     'src/main.cpp'
 ]
 
-executable(
-    'redhand-testgame', 
-    sources,
-    include_directories : incdir,
-    dependencies: dep
-)
+if not meson.is_subproject()
+    dep = [dependency('redhand', required : true, fallback : ['redhand', 'redhand_dep'])]
+    
+    executable(
+        'redhand-testgame', 
+        testgame_sources,
+        include_directories : testgame_incdir,
+        dependencies: dep
+    )
+endif
+
+
+
 
