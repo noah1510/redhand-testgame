@@ -3,7 +3,7 @@
 
 int test_world::onCreate(redhand::event<redhand::engine>){
     //Add textures to world
-    auto tex1 = std::make_unique<redhand::texture2D>("textures/open/house.png","bg");
+    auto tex1 = std::make_unique<redhand::texture2D>("subprojects/redhand-testgame/textures/open/house.png","bg");
     if(this->addTexture(std::move(tex1)) < 0){
         return -21;
     }

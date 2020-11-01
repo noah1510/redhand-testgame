@@ -25,7 +25,7 @@ house::house():redhand::Actor(){
     };
 
     updateBufferData(points_coordinates,triangle_indices,point_colors);
-    setImage("textures/open/crate.png");
+    setImage("subprojects/redhand-testgame/textures/open/crate.png");
     scaleActor(0.5);
     setPosition({-0.1f,-0.1f});
 
@@ -62,7 +62,7 @@ void house::act(redhand::game_loop_event){
 hand::hand(){
 
     //setImage("logo/redhand.svg.png");
-    setImage("textures/open/house.png");
+    setImage("subprojects/redhand-testgame/textures/open/house.png");
     scaleActor(0.5f);
     setPosition( {-0.5f, +0.5f});
     setRotaionAxis({0.0f, 1.0f, 0.0f});
