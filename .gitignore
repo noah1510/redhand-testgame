@@ -17,3 +17,7 @@ subprojects/glfw3/
 subprojects/glib/
 
 subprojects/libffi/
+
+subprojects/stb/
+
+.kdev4/
