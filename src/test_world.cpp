@@ -98,6 +98,14 @@ void test_world::tick(redhand::game_loop_event evt) {
     }
 
     this->moveCamera(deltaCamera.at(0),deltaCamera.at(1));
+    
+    auto scroll = redhand::input_system::getScrollY();
+    if (scroll < 0){
+        this->zoomCamera(0.8);
+    }
+    if (scroll > 0){
+        this->zoomCamera(1.2);
+    }
 
     return;
 }
